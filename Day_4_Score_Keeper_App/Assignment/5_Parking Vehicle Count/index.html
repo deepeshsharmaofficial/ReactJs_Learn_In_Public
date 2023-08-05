@@ -1,0 +1,103 @@
+<!-- 
+You need to create a React App to show an ordered list of vehicles count in the parking.
+
+Note: Vehicle count in the parking should not decrease less than 0.
+
+If increase button is clicked then that vehicle count should increase by 1 and if decrease button of particular vehicle is clicked then count of that vehicle should decrease by 1.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <title>React App</title>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Create handlers to increase and decrease vehicle count here
+        var NoOfCar = 0;
+        var NoOfBike = 0;
+        var NoOfScooty = 0;
+        var NoOfBicycle = 0;
+        function increase(vehicle) {
+            if (vehicle == 'car') {
+                NoOfCar++;                
+            } else if (vehicle == 'bike') {
+                NoOfBike++;
+            } else if (vehicle == 'scooty') {
+                NoOfScooty++;
+            } else if (vehicle == 'bicycle') {
+                NoOfBicycle++;
+            }
+            rootElement.render(<App />);
+        }
+
+        function decrease(vehicle) {
+            if (NoOfCar > 0 || NoOfBike > 0 || NoOfScooty > 0 || NoOfBicycle > 0) {
+                if (vehicle == 'car') {
+                    NoOfCar--;                
+                } else if (vehicle == 'bike') {
+                    NoOfBike--;
+                } else if (vehicle == 'scooty') {
+                    NoOfScooty--;
+                } else if (vehicle == 'bicycle') {
+                    NoOfBicycle--;
+                }
+            }
+
+            rootElement.render(<App />);
+        }
+
+        const App = () => (
+            <>
+                <p>List of all the vehicles count in the parking.</p>
+                <ol>
+                    <li>
+                        <p>
+                            <b>Car: {NoOfCar} </b> &emsp;
+                            <button onClick={() => increase('car')}>Increase</button>
+                            <button onClick={() => decrease('car')}>decrease</button>
+                            {/* Add increase and decrease count buttons here */}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <b>Bike: {NoOfBike} </b> &emsp;
+                            <button onClick={() => increase('bike')}>Increase</button>
+                            <button onClick={() => decrease('bike')}>decrease</button>
+                            {/* Add increase and decrease count buttons here */}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <b>Scooty: {NoOfScooty} </b> &emsp;
+                            <button onClick={() => increase('scooty')}>Increase</button>
+                            <button onClick={() => decrease('scooty')}>decrease</button>
+                            {/* Add increase and decrease count buttons here */}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <b>Bicycle: {NoOfBicycle} </b> &emsp;
+                            <button onClick={() => increase('bicycle')}>Increase</button>
+                            <button onClick={() => decrease('bicycle')}>decrease</button>
+                            {/* Add increase and decrease count buttons here */}
+                        </p>
+                    </li>
+                </ol>
+            </>
+        );
+
+        const rootElement = ReactDOM.createRoot(document.getElementById("root"));
+        rootElement.render(<App />);
+    </script>
+</body>
+
+</html>

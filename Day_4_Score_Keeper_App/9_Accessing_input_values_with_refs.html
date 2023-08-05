@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        *{
+            font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+        }
+
+        .btn {
+            background: #FF4742;
+            border: 1px solid #FF4742;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 16px;
+            min-height: 40px;
+            outline: 0;
+            padding: 12px 14px;
+            text-align: center;
+            margin: 8px;
+        }
+
+        .btn:hover,
+        .btn:active {
+            background-color: initial;
+            background-position: 0 0;
+            color: #FF4742;
+        }
+
+        .btn:active {
+            opacity: .5;
+        }
+
+        input {
+            /* background: #FF4742; */
+            border: 1px solid #FF4742;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+            box-sizing: border-box;
+            color: #595959;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 16px;
+            min-height: 40px;
+            outline: 0;
+            padding: 12px 14px;
+            text-align: center;
+            margin: 8px;
+        }
+
+        p {
+            font-weight: 700;
+            color: #595959;
+
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ff4a4a;
+            background-image: linear-gradient(to right, #ccc, #ff5555, #ccc);
+            margin: 30px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="root" style="text-align: center;">
+        
+    </div>
+
+    <script type="text/babel">
+
+        let score = 0;
+        let wicket = 0;
+        let ballWiseRes = [];
+        let hit = 0;
+        let inputRef = React.createRef();
+
+        function addScore(num) {
+            hit = num;
+            rootElement.render(<App/>);
+            console.log('hit')
+        }
+
+        function addWicket() {
+            hit = "W"
+            rootElement.render(<App/>);
+        }
+
+        // const ScoreButtons = () => {
+        //     <button onClick={() => addScore(1)}>1</button>
+        // }
+
+        const ScoreButtons = () => {
+            return (
+                <>
+                <div>
+                    <button className="btn" onClick={() => addScore(0)}>0</button>
+                    <button className="btn" onClick={() => addScore(1)}>1</button>
+                    <button className="btn" onClick={() => addScore(2)}>2</button>
+                    <button className="btn" onClick={() => addScore(3)}>3</button>
+                    <button className="btn" onClick={() => addScore(4)}>4</button>
+                    <button className="btn" onClick={() => addScore(5)}>5</button>
+                    <button className="btn" onClick={() => addScore(6)}>6</button>
+                    <button className="btn" onClick={addWicket}>Wicket</button>
+                </div>
+                </>
+            );
+        }
+
+        const Result = () => {
+            return (
+                <>
+                <div>
+                    {ballWiseRes.map((res, index) =>(
+                        <>
+                        {index % 6 === 0? <br/>: null}
+                        <span key = {index}> {res === 0 ? <strong>.</strong> : res} </span>&nbsp;&nbsp;
+                        </>
+                    ))}
+                </div> 
+                </>
+            )
+        }
+
+        function handleSubmit(event) {
+    
+            // Synthetic events
+            event.preventDefault();
+
+            if (hit == "W") {
+                wicket += 1;
+            } else {
+                score += hit;
+            }
+
+            // ballWiseRes.unshift(hit);
+            ballWiseRes.unshift(
+                // <span>{hit}{","}{inputRef.current.value}</span>
+                <span>{`${hit} , ${inputRef.current.value}`}</span>
+            );
+
+            console.log(inputRef.current.value);
+            hit = 0;
+            inputRef.current.value ="";
+            
+            rootElement.render(<App />);
+        }
+
+        const Form = () => (
+            <form onSubmit={handleSubmit}>
+                <input value={hit}/>
+                <input ref= {inputRef} placeholder="Add a Comment"/>
+                <button className="btn">Submit</button>
+            </form>
+        )
+
+        const App = () => (
+                <>
+                    <h1>Score Keeper</h1>
+                    <h2> Score: {score}/{wicket} </h2>
+                    <ScoreButtons/>
+                    <br/>
+                    <Form/>
+                    <hr/>
+
+                    {ballWiseRes.map((res, index) => (
+                        <p key= {index}>{res}</p>
+                    ))}
+                </>
+            )
+
+        const rootElement = ReactDOM.createRoot(document.getElementById("root"))
+        rootElement.render(<App />);
+
+    </script>
+</body>
+
+</html>

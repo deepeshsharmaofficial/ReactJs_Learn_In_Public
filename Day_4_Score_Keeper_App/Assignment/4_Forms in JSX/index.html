@@ -1,0 +1,92 @@
+<!-- 
+Question - Create a React App that displays the student details .
+
+In this App, you need to create a form which takes the name and marks obtained by the student as input. When the button is clicked then you have to insert that student's name and marks inside the table which should be below the Student form.
+
+Make sure the entire page should not reload.
+
+There are 2 components. Form and Result. You need to complete them.
+
+Inside the Result component, there should be a table which will show all the students' name and marks.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <title>React App</title>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // const studentList = [{ name: "Rohan", marks: 23 }];
+        const studentList = [];
+
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const nameInput = event.target.elements["name"];
+            const marksInput = event.target.elements["marks"];
+
+            const name = nameInput.value;
+            const marks = parseInt(marksInput.value);
+
+            if (name && !isNaN(marks)) {
+                studentList.push({ "name": name, "marks" : marks});
+
+                nameInput.value = "";
+                marksInput.value = "";
+
+                ReactDOM.render(<Result />, document.getElementById("result"));
+            }
+        }
+
+        const Form = () => (
+            <form onSubmit={handleSubmit}>
+                <input type="text" name="name" placeholder="Name" />
+                <input type="text" name="marks" placeholder="Marks" />
+                <button type="submit">Submit</button>
+            </form>
+        );
+
+        const Result = () => (
+            <tbody id="result">
+                {studentList.map((student, index) => (
+                    <tr key={index}>
+                        <td>{student.name}</td>
+                        <td>{student.marks}</td>
+                    </tr>
+                ))}
+            </tbody>
+        );
+
+        const App = () => (
+            <>
+                <h1>Student's form</h1>
+                <Form />
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Student's name</th>
+                            <th>Marks</th>
+                        </tr>
+                    </thead>
+                    <Result />
+                </table>
+            </>
+        );
+
+        const rootElement = ReactDOM.createRoot(document.getElementById("root"));
+        rootElement.render(<App />);
+    </script>
+</body>
+
+</html>
+
+

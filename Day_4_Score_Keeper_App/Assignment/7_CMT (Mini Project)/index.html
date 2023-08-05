@@ -1,0 +1,169 @@
+<!-- 
+Question-
+Create a React App to maintain the records of the customers.
+
+Create a form to get the details of the customers, like the guest count, name, and phone number.
+
+Complete the table to show the records of the customers as shown in the output.
+
+When the form is submitted, then "Seats Left" should decrease by the guest count, and a new entry should appear at the top of the table having a blank "Check Out" column and the status should show "Click to Checkout".
+
+After clicking on "Click to Checkout", the user should be checked out, and the "Check Out" column should show the current timestamp as the checkout time. Also, "Seats Left" should increase the guest count.
+
+Clicking on "Delete" in the "Remove Entry" column should delete the record. If it's already checked out and when delete is clicked, then "Seats Left" should not increase, but if the record is deleted before checking out, then "Seats Left" should increase by the guest count.
+
+When the count of guest exceeds "Seats Left" show an alert with the message "Guest count exceeds capacity". Also the "Seats Left" should never exceed "Total Capacity" or have a negative value.
+
+Optionally handle duplicate name entries by showing an alert with the message "Customer already exists" when someone tries to add an entry with a name that already exists in the records table.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <title>React App</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    let customers = [];
+    const capacity = 25;
+    let seatsLeft = 25;
+
+    const handleFormSubmit = (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const guestCount = parseInt(formData.get("guestCount"));
+      const name = formData.get("name");
+      const phoneNumber = formData.get("phoneNumber");
+
+      // Check if customer with the same name already exists
+      const existingCustomer = customers.find((customer) => customer.name === name);
+      if (existingCustomer) {
+        alert("Customer already exists");
+        return;
+      }
+
+      if (guestCount > seatsLeft) {
+        alert("Guest count exceeds capacity");
+        return;
+      }
+
+      const newCustomer = {
+        guestCount,
+        name,
+        phoneNumber,
+        checkInTime: new Date().toLocaleTimeString(),
+        checkOutTime: null,
+        status: "Click to Checkout",
+      };
+
+      customers.unshift(newCustomer); // Add the new customer to the beginning of the array
+      seatsLeft -= guestCount; // Decrease the seatsLeft by the guestCount
+
+      // Update the UI
+      renderApp();
+    };
+
+    const handleCheckOut = (index) => {
+      const customer = customers[index];
+      if (customer.checkOutTime === null) {
+        customer.checkOutTime = new Date().toLocaleTimeString();
+        customer.status = "Served";
+        seatsLeft += customer.guestCount; // Increase the seatsLeft by the guestCount
+        // Update the UI
+        renderApp();
+      }
+    };
+
+    const handleDelete = (index) => {
+      const customer = customers[index];
+      if (customer.checkOutTime === null) {
+        seatsLeft += customer.guestCount; // Increase the seatsLeft by the guestCount
+      }
+      customers.splice(index, 1); // Remove the customer from the array
+      // Update the UI
+      renderApp();
+    };
+
+    const renderApp = () => {
+      const App = () => (
+        <div className="App" style={{ textAlign: "center" }}>
+          <div>
+            <h2>Total Capacity: {capacity}</h2>
+            <h2>Seats Left: {seatsLeft}</h2>
+          </div>
+
+          <form onSubmit={handleFormSubmit}>
+            <label>
+              Guest Count:
+              <input type="number" name="guestCount" required />
+            </label>
+            <br />
+            <label>
+              Name:
+              <input type="text" name="name" required />
+            </label>
+            <br />
+            <label>
+              Phone Number:
+              <input type="tel" name="phoneNumber" required />
+            </label>
+            <br />
+            <button type="submit">Add Customer</button>
+          </form>
+
+          <table border="1px" style={{ margin: "auto" }}>
+            <thead>
+              <tr>
+                <th>Guest Count</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Check In Time</th>
+                <th>Check Out Time</th>
+                <th>Status</th>
+                <th>Remove Entry</th>
+              </tr>
+            </thead>
+            <tbody>
+              {customers.map((customer, index) => (
+                <tr key={index}>
+                  <td>{customer.guestCount}</td>
+                  <td>{customer.name}</td>
+                  <td>{customer.phoneNumber}</td>
+                  <td>{customer.checkInTime}</td>
+                  
+
+                  
+                  <td>{customer.checkOutTime || ""}</td>
+                  
+                  <td>
+                    {customer.status === "Click to Checkout" ? (
+                      <button onClick={() => handleCheckOut(index)}>Click to Checkout</button>
+                    ) : (
+                      customer.status
+                    )}
+                  </td>
+
+                  <td>
+                    <button onClick={() => handleDelete(index)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+
+      const rootElement = ReactDOM.createRoot(document.getElementById("root"));
+      rootElement.render(<App />);
+    };
+
+    renderApp();
+  </script>
+</body>
+</html>
