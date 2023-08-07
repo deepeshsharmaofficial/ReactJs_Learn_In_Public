@@ -11,3 +11,4 @@ Create a React app to display your basic information and technical skills
 - Write code for CSS in file styles.css to make it look similar to as shown in the image.
 
 ## Expected Output:
+![User Profile](https://github.com/deepeshsharmaofficial/ReactJs_Learn_In_Public/assets/91846967/b06f4f8a-cf6e-4dda-8046-f6570287085c)
