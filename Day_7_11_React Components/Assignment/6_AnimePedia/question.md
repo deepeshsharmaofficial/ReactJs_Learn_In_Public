@@ -14,3 +14,5 @@ Create a React app to render an anime list using props as shown in the output.
 Note: Add role="img" attribute to the image elements of the react components.
 
 ## Expected Output:
+![AnimePedia](https://github.com/deepeshsharmaofficial/ReactJs_Learn_In_Public/assets/91846967/8f8a83f4-6852-4554-9077-547de6130881)
+
