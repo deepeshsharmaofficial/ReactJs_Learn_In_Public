@@ -18,3 +18,4 @@ Note: `bg` and `color` should only apply styles to a filled button.
 Use named CSS colors when applying default styles to the reusable Button component.
 
 ## Expected Output:
+![Button Variants](https://github.com/deepeshsharmaofficial/ReactJs_Learn_In_Public/assets/91846967/9d24d18f-2c32-4130-a82d-3293b1cc3b27)
